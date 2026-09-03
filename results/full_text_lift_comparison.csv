@@ -1,0 +1,9 @@
+source,cancer_type,n,model_acc,keyword_acc,lift
+truncated (as in Phase 2),Breast,99,0.798,0.5354,0.2626
+truncated (as in Phase 2),CNS,53,0.717,0.5472,0.1698
+truncated (as in Phase 2),HeadNeck,18,0.4444,0.7778,-0.3333
+truncated (as in Phase 2),Lung,45,0.6667,0.6667,0
+full registry text,Breast,99,0.8788,1,-0.1212
+full registry text,CNS,53,0.9057,0.9811,-0.0755
+full registry text,HeadNeck,18,0.6667,1,-0.3333
+full registry text,Lung,45,0.8222,1,-0.1778

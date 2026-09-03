@@ -6,3 +6,4 @@ __pycache__/
 .venv/
 .ipynb_checkpoints/
 .DS_Store
+data/derived/ctgov_cache.json

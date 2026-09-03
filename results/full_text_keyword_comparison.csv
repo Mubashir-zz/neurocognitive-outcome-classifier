@@ -1,0 +1,5 @@
+cancer_type,n,acc_stored_text,acc_full_text,sens_stored,sens_full
+Breast,497,0.507,1,0.3669,1
+CNS,270,0.5185,0.9778,0.2818,1
+HeadNeck,93,0.7849,1,0.2308,1
+Lung,228,0.6228,1,0.3485,1

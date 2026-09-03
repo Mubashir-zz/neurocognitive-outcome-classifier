@@ -1,0 +1,38 @@
+{
+  "n_trials": 1088,
+  "n_positive": 726,
+  "n_negative": 362,
+  "pool_composition": {
+    "candidate/Yes": 726,
+    "negative/No": 356,
+    "candidate/No": 6
+  },
+  "median_chars": {
+    "stored_column": 400.0,
+    "ctgov_outcome_module": 1758.0
+  },
+  "recall_all_positives": {
+    "on_stored_text": "245/726",
+    "on_full_text": "726/726"
+  },
+  "decisive_subset_labelled_yes_but_never_flagged": {
+    "n": 113,
+    "recovered_on_stored_text": 1,
+    "recovered_on_full_text": 113
+  },
+  "false_positives_on_full_text": {
+    "n": 6,
+    "by_cancer_type": {
+      "CNS": 6
+    },
+    "trial_ids": [
+      "NCT07077616",
+      "NCT05399524",
+      "NCT00689221",
+      "NCT03506139",
+      "NCT06466031",
+      "NCT02082119"
+    ]
+  },
+  "specificity_caveat": "The negative pool was selected to be negative, so specificity estimated on this dataset is not unbiased and no specificity figure is reported here. Recall is interpretable because the decisive subset was labelled Yes by human reading, independently of the keyword flag that failed to surface it."
+}
