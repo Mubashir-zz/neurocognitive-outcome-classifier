@@ -122,6 +122,13 @@ referenced in the results and deployed. Run 1 is a development record only.
 
 ## Limitations
 
+- **The stored outcome text is truncated at a median of 400 characters**, against
+  1,849 in the full ClinicalTrials.gov outcome module — 637 of the 1,070 positive
+  trials have no cognitive term left in the stored text. Both models trained on
+  that column. This does not overturn the lift result, but it changes its
+  explanation and it invalidates the 512-token limitation as stated below. Full
+  write-up in the [addendum](results/PHASE2_RESULTS.md#addendum-3-september-2026--truncation-in-the-training-text).
+
 - The same 357-trial test set was evaluated three times across model iterations.
   That is a soft form of test-set overfitting and the threshold-tuned numbers
   should be read with that in mind.

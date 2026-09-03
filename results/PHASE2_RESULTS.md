@@ -97,3 +97,45 @@ Overall: Sens 0.913, Spec 0.623, PPV 0.767, NPV 0.839, F1 0.834, **AUROC 0.894 (
 - `phase2_train_classifier.R` — TF-IDF + LASSO baseline script
 - `Phase2b_BERT_finetune.ipynb` — BERT fine-tuning notebook (Colab)
 - `cognitive_classifier_bert.zip` — final trained Bio_ClinicalBERT model weights (Run 2 configuration), ~433MB
+
+---
+
+## Addendum, 3 September 2026 — truncation in the training text
+
+Found while evaluating the deployed classifier. This corrects one limitation
+stated above and sharpens another; the original text is left in place so the
+change is visible.
+
+**The `Outcome text (for cognition check)` column is truncated at a median of
+400 characters.** Against the full ClinicalTrials.gov outcome module, median
+1,849 characters, the stored column keeps roughly a fifth of the text — and
+routinely cuts off the outcome naming the instrument. 637 of the 1,070 trials
+labelled Yes contain no cognitive term anywhere in the stored text, while the
+`Flagged Keyword(s)` column records the instrument the labeller saw on the
+registry page.
+
+Both models were trained on this column: the R script through its TF-IDF
+features, and the notebook through `df.dropna(subset=['Outcome text (for
+cognition check)'])`.
+
+**1. The 512-token limitation stated above is misattributed.** At 300–400
+characters the text is roughly 75–100 tokens, far inside BERT's window. The
+window was never the binding constraint; the truncation happened upstream during
+data collection. The one place the 512-token limit does bite is at serving time
+on full registry text — one CNS miss in the deployment evaluation had 20,475
+characters of outcome text, well past what the model reads.
+
+**2. The lift = 0.000 result stands, and its mechanism is now clearer.** The R
+model's TF-IDF features were largely computed over text with the answer removed,
+while `keyword_hit` — derived from the untruncated `Flagged Keyword(s)` column —
+carried the real signal. The reported keyword baseline is therefore the accuracy
+of `Flagged Keyword(s)`, not of a keyword rule applied to the text column.
+
+**3. CNS sensitivity of 75–77% is a floor, not a ceiling.** The model was
+fine-tuned on text that, for most positive trials, never mentions the instrument.
+Retraining on complete registry text is the obvious next step.
+
+Independent support for the routing decision: scoring the deployed classifier on
+full registry text gives the keyword rule **100% agreement across 147 breast,
+lung and head & neck trials**, no errors in either direction. See
+[the deployment evaluation](https://github.com/Mubashir-zz/cognitive-outcome-classifier-api/tree/main/validation).
