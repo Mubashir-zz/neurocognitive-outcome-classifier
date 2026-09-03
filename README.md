@@ -70,6 +70,13 @@ breast, lung and head & neck it did not beat the keyword rule — those types
 have standardised instrument vocabulary and the simple rule is already at the
 ceiling.
 
+> **This finding did not survive.** Repeating the comparison on complete
+> ClinicalTrials.gov outcome text rather than the truncated column in this
+> dataset removes the CNS advantage and reverses it: the keyword rule reaches
+> 100% recall on CNS where the deployed BERT reaches 72%. The apparent
+> difficulty was a property of the input, not of the language. Full analysis in
+> [`results/truncation_recall_test.md`](results/truncation_recall_test.md).
+
 So the deployed system is a hybrid, and the routing is an empirical result
 rather than a design preference: **keyword rule for breast/lung/head & neck,
 fine-tuned BERT for CNS.**
@@ -123,11 +130,13 @@ referenced in the results and deployed. Run 1 is a development record only.
 ## Limitations
 
 - **The stored outcome text is truncated at a median of 400 characters**, against
-  1,849 in the full ClinicalTrials.gov outcome module — 637 of the 1,070 positive
-  trials have no cognitive term left in the stored text. Both models trained on
-  that column. This does not overturn the lift result, but it changes its
-  explanation and it invalidates the 512-token limitation as stated below. Full
-  write-up in the [addendum](results/PHASE2_RESULTS.md#addendum-3-september-2026--truncation-in-the-training-text).
+  ~1,760 in the full ClinicalTrials.gov outcome module. Both models trained on
+  that column. Re-running the comparison on complete registry text overturns the
+  headline about BERT: the keyword rule recovers **113/113** of the trials that
+  made the task look hard, against 1/113 on the truncated text, and neither the
+  LASSO model nor BERT improves on it. See
+  [`results/truncation_recall_test.md`](results/truncation_recall_test.md) and the
+  [addendum](results/PHASE2_RESULTS.md#addendum-3-september-2026--truncation-in-the-training-text).
 
 - The same 357-trial test set was evaluated three times across model iterations.
   That is a soft form of test-set overfitting and the threshold-tuned numbers

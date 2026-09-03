@@ -131,11 +131,38 @@ while `keyword_hit` — derived from the untruncated `Flagged Keyword(s)` column
 carried the real signal. The reported keyword baseline is therefore the accuracy
 of `Flagged Keyword(s)`, not of a keyword rule applied to the text column.
 
-**3. CNS sensitivity of 75–77% is a floor, not a ceiling.** The model was
-fine-tuned on text that, for most positive trials, never mentions the instrument.
-Retraining on complete registry text is the obvious next step.
+**3. The case for a language model does not survive untruncated text.** This is
+now settled rather than suspected. The complete ClinicalTrials.gov outcome module
+was retrieved for the 1,088 training trials that have one, and the comparison was
+repeated (`analysis/truncation_recall_test.py`).
 
-Independent support for the routing decision: scoring the deployed classifier on
-full registry text gives the keyword rule **100% agreement across 147 breast,
-lung and head & neck trials**, no errors in either direction. See
-[the deployment evaluation](https://github.com/Mubashir-zz/cognitive-outcome-classifier-api/tree/main/validation).
+The decisive subset is the **113 trials labelled Yes that carried no keyword
+flag** — the ones the labeller had to catch by reading the registry page, and the
+reason the task appeared to need contextual understanding:
+
+| Same 66-term keyword list, applied to | Recovers |
+|---|---|
+| The stored, truncated text | **1 / 113** |
+| The full registry outcome text | **113 / 113** |
+
+Recall across all 726 positives rises from 245/726 to 726/726. TF-IDF + LASSO
+trained on full text has *negative* lift against that rule in every cancer type
+(−0.08 to −0.33). Scoring the deployed Bio_ClinicalBERT on full registry text
+gives **72% sensitivity on CNS**, against 100% for the keyword rule on the same
+trials.
+
+So the conclusion above — that BERT provides a real advantage for CNS — is an
+artefact of training and evaluating on truncated text. On complete input the
+advantage disappears and reverses. The keyword rule was never the weak component;
+the text pipeline was.
+
+**What this does not establish: specificity.** The negative pool in this dataset
+was selected to be negative, so a specificity figure computed here is optimistic
+by construction and none is reported. Six false positives were observed, all CNS.
+Establishing specificity needs a random registry sample, not this enriched design.
+
+Independent support: scoring the deployed classifier on full registry text gives
+the keyword rule **100% agreement across 147 breast, lung and head & neck
+trials**, no errors in either direction. See
+[the deployment evaluation](https://github.com/Mubashir-zz/cognitive-outcome-classifier-api/tree/main/validation)
+and [`results/truncation_recall_test.md`](truncation_recall_test.md).
