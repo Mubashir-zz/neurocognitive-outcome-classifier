@@ -1,0 +1,14 @@
+PHASE 2 CLASSIFIER — HELD-OUT TEST SET PERFORMANCE
+Test set size: 354 
+
+         Actual
+Predicted   0   1
+        0 148  24
+        1   1 181
+
+Sensitivity (Recall): 0.883
+Specificity:          0.993
+PPV (Precision):      0.995
+NPV:                  0.860
+F1 score:             0.935
+AUROC:                0.971
